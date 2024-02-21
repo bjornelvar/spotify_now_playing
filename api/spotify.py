@@ -130,6 +130,7 @@ def makeSVG(data, background_color, border_color):
         image = loadImageB64(item["album"]["images"][1]["url"])
 
     # Additional checks for item details
+    # ÞÚ GERÐIR ÞETTA SEINAST BJÖSSI
     artistName = item["artists"][0]["name"].replace("&", "&amp;") if item else "I need to fix this..."
     songName = item["name"].replace("&", "&amp;") if item else "A Podcast"
     songURI = item["external_urls"]["spotify"] if item else "https://spotify.com"
