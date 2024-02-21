@@ -113,25 +113,27 @@ def makeSVG(data, background_color, border_color):
     barCSS = barGen(barCount)
 
     if not "is_playing" in data:
-        contentBar = "" #Shows/Hides the EQ bar if no song is currently playing
+        contentBar = ""  # Shows/Hides the EQ bar if no song is currently playing
         currentStatus = "Was playing:"
         recentPlays = get(RECENTLY_PLAYING_URL)
         recentPlaysLength = len(recentPlays["items"])
         itemIndex = random.randint(0, recentPlaysLength - 1)
         item = recentPlays["items"][itemIndex]["track"]
     else:
-        item = data["item"]
+        item = data.get("item")
         currentStatus = "Vibing to:"
 
-    if item["album"]["images"] == []:
+    # Check if item is None
+    if item is None or item.get("album") is None or not item["album"].get("images"):
         image = PLACEHOLDER_IMAGE
     else:
         image = loadImageB64(item["album"]["images"][1]["url"])
 
-    artistName = item["artists"][0]["name"].replace("&", "&amp;")
-    songName = item["name"].replace("&", "&amp;")
-    songURI = item["external_urls"]["spotify"]
-    artistURI = item["artists"][0]["external_urls"]["spotify"]
+    # Additional checks for item details
+    artistName = item["artists"][0]["name"].replace("&", "&amp;") if item else "I need to fix this..."
+    songName = item["name"].replace("&", "&amp;") if item else "A Podcast"
+    songURI = item["external_urls"]["spotify"] if item else "https://spotify.com"
+    artistURI = item["artists"][0]["external_urls"]["spotify"] if item else "https://spotify.com"
 
     dataDict = {
         "contentBar": contentBar,
